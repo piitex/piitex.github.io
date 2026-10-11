@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Features – RenGL</title>
+  <meta name="description" content="Everything in RenGL: a drawn-from-scratch UI toolkit, layouts, styling and themes, animation, a 2D game framework, audio and video, optional 3D and app plumbing.">
+  <meta name="theme-color" content="#0b0a16">
+  <meta property="og:title" content="RenGL features">
+  <meta property="og:description" content="A UI toolkit, layouts, styling, animation, a 2D game framework, audio and video, optional 3D and the plumbing around them.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script src="js/layout.js"></script>
+  <noscript><nav class="wrap noscript-nav"><a href="index.html">Home</a><a href="features.html">Features</a><a href="code.html">Code</a><a href="products.html">Products</a></nav></noscript>
+  <div class="bg-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main>
+    <header class="wrap page-head reveal">
+      <p class="eyebrow">Features</p>
+      <h1>Everything you need to ship a <span class="grad">polished</span> app.</h1>
+      <p class="lead">Widgets are drawn by RenGL itself, so you control how every pixel looks. Nine areas, one toolkit. Each one links to runnable code on the <a href="code.html" class="grad">Code page</a>.</p>
+    </header>
+
+    <nav class="chipnav" aria-label="Jump to a feature">
+      <div class="wrap chips">
+        <a href="#ui">UI toolkit</a>
+        <a href="#layouts">Layouts</a>
+        <a href="#styling">Styling</a>
+        <a href="#containers">Draggable containers</a>
+        <a href="#animation">Animation</a>
+        <a href="#game">2D games</a>
+        <a href="#media">Audio &amp; video</a>
+        <a href="#3d">3D</a>
+        <a href="#app">App plumbing</a>
+      </div>
+    </nav>
+
+    <div class="wrap features-list">
+
+      <!-- 1. UI -->
+      <section class="feature reveal" id="ui">
+        <div>
+          <div class="feature-top"><span class="ico">▤</span><span class="feature-num">01</span></div>
+          <h2>UI toolkit</h2>
+          <p class="intro">Every widget is drawn by RenGL, so an app looks the same on macOS, Windows and Linux, and nothing is held back by a native control.</p>
+          <ul class="ticks">
+            <li><strong>Text:</strong> single-line fields, multi-line areas, a rich text editor and Markdown-formatted text, with offline spell checking.</li>
+            <li><strong>Choices:</strong> buttons with icons, checkboxes, radio buttons, toggle switches, dropdowns, sliders, spinners, color pickers and date/time pickers.</li>
+            <li><strong>Data:</strong> sortable, resizable tables, trees, tabs, scroll areas, context menus and tooltips.</li>
+            <li><strong>Dialogs:</strong> modal containers that block what is under them, and popups that paint over everything.</li>
+            <li><strong>Icons:</strong> the Feather icon set is bundled, drawn in the label's color.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#ui">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/overlays/README.md" target="_blank" rel="noopener">Widget catalog ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="window">
+            <div class="window-bar"><i></i><i></i><i></i></div>
+            <img src="assets/img/hero-poster.jpg" alt="A glass-style RenGL UI with sliders, toggles and charts" loading="lazy" width="1120" height="640">
+          </div>
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>ButtonOverlay</code><code>TextFieldOverlay</code><code>TextAreaOverlay</code><code>RichTextAreaOverlay</code><code>DropdownOverlay</code><code>SliderOverlay</code><code>ToggleSwitchOverlay</code><code>CheckBoxOverlay</code><code>ColorPickerOverlay</code><code>DateTimePickerOverlay</code><code>TableView</code><code>TreeView</code><code>ModalContainer</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Layouts -->
+      <section class="feature reveal" id="layouts">
+        <div>
+          <div class="feature-top"><span class="ico">⊞</span><span class="feature-num">02</span></div>
+          <h2>Layouts</h2>
+          <p class="intro">A layout is a container that positions its children for you, every frame. They nest freely, so a toolbar inside a column inside a dock is normal.</p>
+          <ul class="ticks">
+            <li><strong>Six layouts:</strong> vertical, horizontal, grid, stack (layered), flow (wraps) and dock (a header, a sidebar and a content area that fills the rest).</li>
+            <li><strong>Sharing space:</strong> give children weights or relative sizes and they split what is left as the window is resized.</li>
+            <li><strong>Fit to content:</strong> a layout can size itself to its children, and elements can be anchored to any corner or the center.</li>
+            <li><strong>Panes and tabs:</strong> split containers with a draggable divider, and tab containers with closable, scrolling tabs.</li>
+            <li><strong>Layouts as data:</strong> describe a whole screen in a JSON file and load it with one call.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#layouts">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/layouts/README.md" target="_blank" rel="noopener">Layout docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>VerticalLayout</code><code>HorizontalLayout</code><code>GridLayout</code><code>StackLayout</code><code>FlowLayout</code><code>DockLayout</code><code>SplitContainer</code><code>TabContainer</code><code>Anchor</code><code>UiFile</code>
+            </div>
+          </div>
+          <div class="keys">
+            <h3>Choosing one</h3>
+            <p>A list: vertical. A toolbar: horizontal. Label and field pairs: a two-column grid. A badge on an icon: stack. Chips that wrap: flow. An app shell: dock.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Styling -->
+      <section class="feature reveal" id="styling">
+        <div>
+          <div class="feature-top"><span class="ico">◐</span><span class="feature-num">03</span></div>
+          <h2>Styling &amp; themes</h2>
+          <p class="intro">There is no CSS engine and no native look to fight. Every style is set from Java, and a theme can restyle the whole app while it runs.</p>
+          <ul class="ticks">
+            <li><strong>Boxes:</strong> backgrounds, borders, corner radii, hover colors and opacity on every element.</li>
+            <li><strong>Paints:</strong> solid colors, gradients, gradients that slide, and a color-cycling rainbow, for fills and borders alike.</li>
+            <li><strong>Themes:</strong> light, dark and crimson are built in, or write your own. Anything you set by hand stays pinned when the theme changes.</li>
+            <li><strong>Backgrounds:</strong> animated dot grids, constellations and electric nodes behind any element or the whole window, and even a live 3D scene.</li>
+            <li><strong>Fonts &amp; vectors:</strong> custom fonts, and SVGs rendered at any size.</li>
+            <li><strong>Shader effects:</strong> write an SkSL shader and run everything an element draws through it.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#styling">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/styling/README.md" target="_blank" rel="noopener">Styling docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Styling</code><code>Color</code><code>LinearGradient</code><code>ScrollingGradient</code><code>RainbowColor</code><code>ThemeManager</code><code>DarkTheme</code><code>LightTheme</code><code>CrimsonTheme</code><code>ConstellationBackground</code><code>DotGridBackground</code><code>AnimatedDotBackground</code><code>ElectricNodeBackground</code><code>ShaderEffect</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Containers -->
+      <section class="feature reveal" id="containers">
+        <div>
+          <div class="feature-top"><span class="ico">⤢</span><span class="feature-num">04</span></div>
+          <h2>Draggable containers</h2>
+          <p class="intro">Containers that behave like little windows inside your window: the user can move them, resize them and rearrange what is in them.</p>
+          <ul class="ticks">
+            <li><strong>Dragging:</strong> one call turns it on. Keep a panel inside a rectangle, and make it stop flush against others.</li>
+            <li><strong>Resizing:</strong> a resizable container follows the window, scales its children and fonts, and lets the user drag its corners.</li>
+            <li><strong>Reordering:</strong> grids the user rearranges by dragging, with optional free placement for inventory-style slots.</li>
+            <li><strong>Scrolling:</strong> scroll containers with themed scrollbars, inside which tables and trees are built.</li>
+            <li><strong>Modals:</strong> dialogs that block the UI beneath them, with a close animation.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#containers">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/containers/README.md" target="_blank" rel="noopener">Container docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Container</code><code>ResizableContainer</code><code>ReorderableGrid</code><code>ScrollContainer</code><code>SplitContainer</code><code>ModalContainer</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Animation -->
+      <section class="feature reveal" id="animation">
+        <div>
+          <div class="feature-top"><span class="ico">✦</span><span class="feature-num">05</span></div>
+          <h2>Animation</h2>
+          <p class="intro">Transitions animate elements. Tweens and sequences animate everything else. All of it is driven by delta time, so it runs the same on a 60 Hz and a 240 Hz screen.</p>
+          <ul class="ticks">
+            <li><strong>One-liners:</strong> fade in and out with a callback, pop an element in with a scale transition, pick from ten easing curves including back, elastic and bounce.</li>
+            <li><strong>Tweens &amp; sequences:</strong> count a score up, bob a coin forever, or script "wait, zoom the camera, open the door" as steps.</li>
+            <li><strong>Scene transitions:</strong> fade, slide or wipe between screens.</li>
+            <li><strong>Locking:</strong> a title card can hold the game still, and be skipped with a key press.</li>
+            <li><strong>Your own:</strong> implement one small interface to draw anything animated over an element.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#animation">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/animation/transitions.md" target="_blank" rel="noopener">Animation docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>FadeTransition</code><code>ScaleTransition</code><code>Transition</code><code>Easing</code><code>Tween</code><code>Sequence</code><code>Playable</code><code>SceneTransition</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. 2D games -->
+      <section class="feature reveal" id="game">
+        <div>
+          <div class="feature-top"><span class="ico">◈</span><span class="feature-num">06</span></div>
+          <h2>2D game framework</h2>
+          <p class="intro">Scenes, a fixed-step loop, a camera, sprites and particles, in a plain window with no separate game engine on top. The UI toolkit is right there for menus and HUDs.</p>
+          <ul class="ticks">
+            <li><strong>Scenes:</strong> menus, levels, pause screens and popups on a stack, with logic at a fixed tick rate and smooth drawing in between.</li>
+            <li><strong>Entities:</strong> build levels as data. Entities with components are saved to and loaded from JSON.</li>
+            <li><strong>Graphics:</strong> a camera with follow, dead zone, bounds and shake; sprites, atlases, frame animation, Tiled maps, and a batch that draws thousands of sprites per call.</li>
+            <li><strong>Particles &amp; shaders:</strong> pooled particle systems, plus SkSL shaders and post effects.</li>
+            <li><strong>Toolbox:</strong> geometry and raycasts, spatial grids, an event bus, object pools and seeded random numbers.</li>
+            <li><strong>Input:</strong> named actions that players can rebind.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#game">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/game/README.md" target="_blank" rel="noopener">Game docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="window">
+            <div class="window-bar"><i></i><i></i><i></i></div>
+            <img src="assets/img/fireworks-poster.jpg" alt="Fireworks made of thousands of particles over a city skyline" loading="lazy" width="1120" height="640">
+          </div>
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Scene</code><code>SceneManager</code><code>GameTime</code><code>EntityScene</code><code>Camera</code><code>Sprite</code><code>SpriteBatch</code><code>TextureAtlas</code><code>ParticleSystem</code><code>TileMap</code><code>InputContext</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Audio & video -->
+      <section class="feature reveal" id="media">
+        <div>
+          <div class="feature-top"><span class="ico">♪</span><span class="feature-num">07</span></div>
+          <h2>Audio &amp; video</h2>
+          <p class="intro">OpenAL sound with positional audio and streamed music, and a video element that plays inside your UI.</p>
+          <ul class="ticks">
+            <li><strong>Formats:</strong> Ogg Vorbis, Opus, FLAC, MP3 and WAV.</li>
+            <li><strong>Sounds &amp; music:</strong> short sounds are decoded once and overlap freely. Music streams from disk and crossfades between tracks.</li>
+            <li><strong>Mixing:</strong> channels, volume, pitch, pan and fades, plus pitch variation and play limits so a gunshot never sounds mechanical.</li>
+            <li><strong>3D sound:</strong> distance falloff, Doppler, cones, occlusion and reverb presets. It works in 2D games too.</li>
+            <li><strong>Video:</strong> streamed from disk, so a huge file costs no more memory than a short one. H.264 and HEVC play on macOS through the system decoder; Motion JPEG with PCM sound plays on every platform.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#media">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/audio/README.md" target="_blank" rel="noopener">Audio docs ↗</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/video/README.md" target="_blank" rel="noopener">Video docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Audio</code><code>Sound</code><code>Music</code><code>Playback</code><code>AudioChannel</code><code>Reverb</code><code>VideoOverlay</code><code>VideoPlayer</code>
+            </div>
+          </div>
+          <div class="keys">
+            <h3>Good to know</h3>
+            <p>On Windows and Linux there is no system video decoder yet, so ship Motion JPEG or uncompressed AVI/MP4 files there. The docs include the FFmpeg command to convert.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. 3D -->
+      <section class="feature reveal" id="3d">
+        <div>
+          <div class="feature-top"><span class="ico">⬡</span><span class="feature-num">08</span></div>
+          <h2>3D <span class="badge">Optional</span></h2>
+          <p class="intro">The UI stays 2D. The 3D layer renders into a picture that the UI draws like an image, so 3D can sit in a panel or behind the whole window. Programs that don't use it never pay for it.</p>
+          <ul class="ticks">
+            <li><strong>Materials &amp; light:</strong> classic and physically based materials, up to eight lights, and shadows from sun, spot and point lights, with cascades for big scenes.</li>
+            <li><strong>Skies:</strong> gradients, cube maps, panoramas and HDR skies that light and reflect in the scene, plus tone mapping, bloom and fog.</li>
+            <li><strong>Models:</strong> glTF, GLB, OBJ, FBX and Collada, with skeletal animation and morph targets.</li>
+            <li><strong>Physics:</strong> rigid bodies, joints, a character controller and raycasts, in plain Java.</li>
+            <li><strong>Scale:</strong> instancing draws thousands of copies of a mesh in one call, and custom GLSL shaders run on both backends.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#3d">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/3d/README.md" target="_blank" rel="noopener">3D docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="window">
+            <div class="window-bar"><i></i><i></i><i></i></div>
+            <img src="assets/img/studio3d-poster.jpg" alt="Metal and glossy spheres lit by a sunset sky and orbiting neon lights" loading="lazy" width="1120" height="640">
+          </div>
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Scene3D</code><code>Viewport3D</code><code>Background3D</code><code>Node3D</code><code>Material</code><code>Light</code><code>Skybox</code><code>Model</code><code>AnimationPlayer</code><code>PhysicsWorld</code><code>RigidBody</code><code>OrbitControls</code>
+            </div>
+          </div>
+          <div class="keys">
+            <h3>Good to know</h3>
+            <p>3D needs OpenGL or Vulkan, so on macOS a 3D program asks for Vulkan. It has been tested on macOS and Windows; Linux is untested.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. App plumbing -->
+      <section class="feature reveal" id="app">
+        <div>
+          <div class="feature-top"><span class="ico">⚙</span><span class="feature-num">09</span></div>
+          <h2>App plumbing</h2>
+          <p class="intro">The unglamorous parts that every real app needs, already done.</p>
+          <ul class="ticks">
+            <li><strong>Windows:</strong> several windows on one engine; fullscreen, borderless and always-on-top, all changeable on a running window. Even the graphics API can be switched live.</li>
+            <li><strong>Files:</strong> the operating system's own open, save and choose-folder dialogs, and files dropped onto the window.</li>
+            <li><strong>Background work:</strong> timers, async tasks whose results arrive on the render thread, and a loader with progress for loading screens.</li>
+            <li><strong>Downloads:</strong> resumable, checksum-verified HTTP downloads over several connections, with ready-made progress displays.</li>
+            <li><strong>Config &amp; paths:</strong> readable config files with nested sections, and an environment that puts shipped files and per-user data in the right place.</li>
+            <li><strong>Input:</strong> polled keys and mouse, locked cursor for games, and rebindable named actions.</li>
+          </ul>
+          <div class="feature-links">
+            <a class="btn btn-primary btn-small" href="code.html#app">See the code</a>
+            <a class="btn btn-ghost btn-small" href="https://github.com/piitex/RenGL/blob/main/docs/reference/README.md" target="_blank" rel="noopener">Reference docs ↗</a>
+          </div>
+        </div>
+        <div class="side">
+          <div class="keys">
+            <h3>Key classes</h3>
+            <div class="chipset">
+              <code>Engine</code><code>Window</code><code>WindowOptions</code><code>FileDialog</code><code>Scheduler</code><code>Loader</code><code>Download</code><code>Config</code><code>AppEnvironment</code><code>InputContext</code>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="wrap">
+      <div class="final reveal">
+        <h2>Want to see how it reads?</h2>
+        <div class="cta">
+          <a class="btn btn-primary" href="code.html">Browse the code examples</a>
+          <a class="btn btn-ghost" href="products.html">See what's been built</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="site-footer"></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

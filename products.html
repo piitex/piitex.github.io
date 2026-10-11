@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products – RenGL</title>
+  <meta name="description" content="Apps built with RenGL: OpenZip, CCA, SketchGL and Phorg.">
+  <meta name="theme-color" content="#0b0a16">
+  <meta property="og:title" content="Built with RenGL">
+  <meta property="og:description" content="OpenZip, CCA, SketchGL and Phorg: real apps made with the RenGL toolkit.">
+  <meta property="og:image" content="assets/img/openzip.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script src="js/layout.js"></script>
+  <noscript><nav class="wrap noscript-nav"><a href="index.html">Home</a><a href="features.html">Features</a><a href="code.html">Code</a><a href="products.html">Products</a></nav></noscript>
+  <div class="bg-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main>
+    <header class="wrap page-head reveal">
+      <p class="eyebrow">Built with RenGL</p>
+      <h1>Products &amp; <span class="grad">projects.</span></h1>
+      <p class="lead">RenGL is used for real apps, not just demos. Here is what has been made with it so far.</p>
+    </header>
+
+    <section class="wrap" id="products">
+      <div class="grid products">
+        <article class="product reveal" id="openzip">
+          <div class="shot"><img src="assets/img/openzip.jpg" alt="OpenZip browsing the contents of an archive" loading="lazy" width="1000" height="660"></div>
+          <div class="body">
+            <div class="badges"><span class="badge ok">Available</span><span class="badge">Archive utility</span></div>
+            <h3>OpenZip</h3>
+            <p>A free archive utility for macOS, Windows and Linux. Create zip, 7z and tar archives, open and extract RAR, protect archives with AES-256, preview files, and compress straight from Finder or Explorer.</p>
+            <span class="soon">Download link coming soon</span>
+            <!-- When you have a download page, replace the line above with:
+                 <a class="link" href="YOUR-URL">Download ↗</a> -->
+          </div>
+        </article>
+
+        <article class="product reveal" id="cca">
+          <div class="shot"><img src="assets/img/cca-chat.jpg" alt="CCA character chat window with a themed network background" loading="lazy" width="1400" height="788"></div>
+          <div class="body">
+            <div class="badges"><span class="badge warn">Prototype</span><span class="badge">Chat app</span></div>
+            <h3>CCA</h3>
+            <p>A character chat app and a showcase of the engine: in-app theming, an animated physics background, a download manager, a spell checker and Hugging Face support.</p>
+            <a class="link" href="https://github.com/piitex/cca" target="_blank" rel="noopener">View on GitHub ↗</a>
+          </div>
+        </article>
+
+        <article class="product reveal" id="sketchgl">
+          <div class="shot"><img src="assets/img/sketchgl.jpg" alt="SketchGL with a night scene of a lighthouse drawn on the canvas, the toolbox on the left and the color and brush panel on the right" loading="lazy" width="1400" height="788"></div>
+          <div class="body">
+            <div class="badges"><span class="badge ok">Available</span><span class="badge">Drawing app</span></div>
+            <h3>SketchGL</h3>
+            <p>A small drawing app with brush, pencil, marker, spray and eraser, fill, a color picker, zoom and pan, undo/redo, and PNG open and save.</p>
+            <span class="soon">Download link coming soon</span>
+          </div>
+        </article>
+
+        <article class="product reveal" id="phorg">
+          <div class="shot"><img src="assets/img/phorg.jpg" alt="Phorg showing a library of sample pictures as folders and thumbnails, with the tag list on the left" loading="lazy" width="1400" height="788"></div>
+          <div class="body">
+            <div class="badges"><span class="badge warn">In development</span><span class="badge">Photo organizer</span></div>
+            <h3>Phorg</h3>
+            <p>A photo organizer for large libraries. Import into a vault you choose, browse with folders, tags and a zoomable viewer, and keep everything encrypted with AES-256.</p>
+            <span class="soon">Page coming soon</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="callout reveal">
+        <div>
+          <h3>Curious how they're made?</h3>
+          <p>Every one of these draws its own widgets with RenGL: no native controls and no CSS. See what the toolkit offers, or read the code.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary btn-small" href="features.html">What RenGL can do</a>
+          <a class="btn btn-ghost btn-small" href="code.html">See the code</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="final reveal">
+        <h2>Boring, simplistic designs don't have to be the normal.</h2>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/piitex/RenGL" target="_blank" rel="noopener">Star RenGL on GitHub</a>
+          <a class="btn btn-ghost" href="index.html#start">Get started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="site-footer"></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

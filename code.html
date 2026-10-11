@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code – RenGL</title>
+  <meta name="description" content="Detailed Java examples for every RenGL feature: forms, layouts, styling, animation, 2D games, audio and video, 3D, physics and app plumbing.">
+  <meta name="theme-color" content="#0b0a16">
+  <meta property="og:title" content="RenGL code examples">
+  <meta property="og:description" content="Copy-ready Java for every RenGL feature, in the same order as the Features page.">
+  <meta property="og:image" content="assets/img/hero-poster.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script src="js/layout.js"></script>
+  <noscript><nav class="wrap noscript-nav"><a href="index.html">Home</a><a href="features.html">Features</a><a href="code.html">Code</a><a href="products.html">Products</a></nav></noscript>
+  <div class="bg-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main>
+    <header class="wrap page-head reveal">
+      <p class="eyebrow">Code</p>
+      <h1>The API, <span class="grad">in real code.</span></h1>
+      <p class="lead">One section for each area on the <a href="features.html" class="grad">Features page</a>, in the same order. Each example is complete enough to copy, and was compiled against the engine's source.</p>
+    </header>
+
+    <nav class="chipnav" aria-label="Jump to an example">
+      <div class="wrap chips">
+        <a href="#hello">Start here</a>
+        <a href="#ui">UI toolkit</a>
+        <a href="#layouts">Layouts</a>
+        <a href="#styling">Styling</a>
+        <a href="#containers">Draggable containers</a>
+        <a href="#animation">Animation</a>
+        <a href="#game">2D games</a>
+        <a href="#media">Audio &amp; video</a>
+        <a href="#3d">3D</a>
+        <a href="#app">App plumbing</a>
+      </div>
+    </nav>
+
+    <div class="wrap">
+
+      <!-- 00 Hello -->
+      <section class="doc-section" id="hello">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">▶</span><span class="feature-num">START HERE</span></div>
+          <h2>Four steps, every time.</h2>
+          <p>Every RenGL program does the same four things: make a <code>Window</code>, put a <code>Container</code> in it, put elements in the container, and hand the window to an <code>Engine</code>. Everything below builds on this. Imports are shown here once; later examples leave them out so the code stays readable.</p>
+          <div class="doc-links">
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/getting-started.md" target="_blank" rel="noopener">Getting started guide ↗</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/architecture.md" target="_blank" rel="noopener">How the pieces fit ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Hello.java</h3>
+          <p class="ex-desc">The smallest complete program. Elements start transparent, so the window's own background shows through the container.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Hello.java</span><button class="copy" type="button" data-copy="#hello-code">Copy</button></div>
+<pre><code id="hello-code" class="language-java">import me.piitex.engine.Engine;
+import me.piitex.engine.Window;
+import me.piitex.engine.WindowOptions;
+import me.piitex.engine.ui.color.Color;
+import me.piitex.engine.ui.containers.Container;
+import me.piitex.engine.ui.overlays.TextOverlay;
+
+public class Hello {
+    public static void main(String[] args) {
+        // 1. The window (title + size).
+        Window window = new Window(new WindowOptions("Hello RenGL").setDimensions(1280, 720));
+
+        // 2. A container that fills the window. Elements start transparent, so the
+        // window's own background shows through it.
+        Container root = new Container(1280, 720);
+        window.addContainer(root);
+
+        // 3. Elements. x/y is the top-left corner.
+        TextOverlay title = new TextOverlay("Hello, RenGL!", 48f, Color.BLACK);
+        title.setPosition(50, 50);
+        root.addElement(title);
+
+        // 4. Start the engine. This call blocks until the window is closed.
+        new Engine().start(window);
+    }
+}</code></pre>
+          </div>
+        </div>
+        <p class="ex-desc" style="margin-top:18px;max-width:780px">Run it with <code>-XstartOnFirstThread --enable-native-access=ALL-UNNAMED</code> on macOS. <code>Engine.start</code> doesn't return until the window closes, so build the whole UI first and react to things inside callbacks.</p>
+      </section>
+
+      <!-- 01 UI -->
+      <section class="doc-section" id="ui">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">▤</span><span class="feature-num">01 · UI TOOLKIT</span></div>
+          <h2>Widgets with one callback each.</h2>
+          <p>Widgets are overlays you add to containers. Most take a size in the constructor and report what the user did through a single callback. Value setters such as <code>setText</code> or <code>setSelected</code> are silent, so a callback only ever means the user did something.</p>
+          <div class="doc-links">
+            <a href="features.html#ui">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/overlays/README.md" target="_blank" rel="noopener">Widget catalog ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A themed settings form</h3>
+          <p class="ex-desc">A dark panel with a text field, a dropdown, a slider with a formatted label, a toggle with its label, and a button with an icon. A vertical layout places everything.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>SettingsForm.java</span><button class="copy" type="button" data-copy="#ui_form">Copy</button></div>
+<pre><code id="ui_form" class="language-java">ThemeManager.setCurrent(new DarkTheme()); // before building, so everything starts dark
+Window window = new Window(new WindowOptions("Settings").setDimensions(800, 600));
+
+Container root = new Container(800, 600);
+window.addContainer(root);
+
+VerticalLayout panel = new VerticalLayout(250, 100, 300, 420);
+panel.setSpacing(14);
+panel.setPadding(20);
+panel.useTheme(); // opt this panel into theme colors
+root.addElement(panel);
+
+TextFieldOverlay name = new TextFieldOverlay(260, 28);
+name.setPlaceholder("Your name...");
+name.onTextChanged(text -&gt; System.out.println("typed: " + text));
+panel.addElement(name);
+
+DropdownOverlay&lt;String&gt; country = new DropdownOverlay&lt;&gt;(260, 28);
+country.setPlaceholder("Country...");
+country.setItems(List.of("Canada", "France", "Germany", "Japan"));
+country.onSelect(c -&gt; System.out.println("Selected: " + c));
+panel.addElement(country);
+
+SliderOverlay volume = new SliderOverlay(260, 0, 100, 50); // width, min, max, start
+volume.setStep(1);
+volume.setLabelFormatter(v -&gt; Math.round(v) + "%");
+volume.onValueChange(v -&gt; System.out.println("volume = " + v));
+panel.addElement(volume);
+
+HorizontalLayout row = new HorizontalLayout(260, 28);
+row.setSpacing(12);
+row.setAlignment(Layout.Alignment.CENTER_LEFT);
+ToggleSwitchOverlay notifications = new ToggleSwitchOverlay();
+notifications.onToggle(on -&gt; System.out.println("notifications: " + on));
+row.addElement(new TextOverlay("Notifications", 16f, Color.BLACK));
+row.addElement(notifications);
+panel.addElement(row);
+
+ButtonOverlay add = new ButtonOverlay("Add files", 260, 36);
+add.setIcon(Feather.PLUS);
+add.setTooltip("Choose files to import");
+add.onAction(() -&gt; System.out.println("Hello, " + name.getText()));
+panel.addElement(add);
+
+new Engine().start(window);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A sortable table inside tabs</h3>
+          <p class="ex-desc">Clicking a header sorts, dragging its edge resizes the column, and rows can be selected. Give a column a comparator when its text wouldn't sort correctly, as with sizes and dates. Tabs can be closable.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>FilesTab.java</span><button class="copy" type="button" data-copy="#ui_table">Copy</button></div>
+<pre><code id="ui_table" class="language-java">record Entry(String name, long size, Instant modified) {}
+List&lt;Entry&gt; entries = List.of(
+        new Entry("notes.txt", 2_048, Instant.now()),
+        new Entry("photo.png", 1_500_000, Instant.now()));
+
+TableView&lt;Entry&gt; table = new TableView&lt;&gt;(600, 360); // width, height
+table.addColumn("Name", Entry::name).setWidth(260);
+table.addColumn("Size", e -&gt; e.size() / 1024 + " KB")
+        .setAlignment(TextAlign.RIGHT)
+        .setComparator(Comparator.comparingLong(Entry::size)); // "9 KB" would sort after "1,500 KB" as text
+table.addColumn("Modified", e -&gt; e.modified().toString())
+        .setComparator(Comparator.comparing(Entry::modified));
+table.setItems(entries);
+table.onActivate(entry -&gt; System.out.println("open " + entry.name()));
+
+VerticalLayout notes = new VerticalLayout(600, 360);
+notes.addElement(new TextOverlay("Nothing here yet.", 16f, Color.BLACK));
+
+TabContainer tabs = new TabContainer(20, 20, 640, 440);
+tabs.addTab("Files", table);
+tabs.addTab("Notes", notes).setClosable(true);
+tabs.onTabSelected(tab -&gt; System.out.println("Now showing " + tab.getTitle()));
+root.addElement(tabs);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 Layouts -->
+      <section class="doc-section" id="layouts">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">⊞</span><span class="feature-num">02 · LAYOUTS</span></div>
+          <h2>Describe the structure, not the pixels.</h2>
+          <p>A layout positions its children every frame, so you never set an <code>x</code> and <code>y</code> by hand. Layouts nest freely and keep working as the window is resized.</p>
+          <div class="doc-links">
+            <a href="features.html#layouts">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/layouts/README.md" target="_blank" rel="noopener">Layout docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>An app shell with a docked header and sidebar</h3>
+          <p class="ex-desc"><code>DockLayout</code> pins a header, a status bar and a sidebar to the edges and gives the last child whatever remains. Inside the header, a <code>HorizontalLayout</code> gives the title the room the two buttons leave, using a layout weight.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>AppShell.java</span><button class="copy" type="button" data-copy="#layouts_dock">Copy</button></div>
+<pre><code id="layouts_dock" class="language-java">Container header = new Container(1280, 56);
+Container statusBar = new Container(1280, 28);
+Container sidebar = new Container(240, 0);
+Container content = new Container(0, 0);
+
+DockLayout screen = new DockLayout(1280, 720);
+screen.setSpacing(6);
+screen.addElement(header, DockLayout.Dock.TOP);     // keeps its height, takes the full width
+screen.addElement(statusBar, DockLayout.Dock.BOTTOM);
+screen.addElement(sidebar, DockLayout.Dock.LEFT);   // keeps its width, takes the height that is left
+screen.addElement(content, DockLayout.Dock.FILL);   // takes everything that remains
+root.addElement(screen);
+
+// A toolbar: the title takes whatever room the other two leave.
+ButtonOverlay back = new ButtonOverlay("Back", 80, 40);
+TextOverlay title = new TextOverlay("Inbox", 18f, Color.BLACK);
+ButtonOverlay menu = new ButtonOverlay("Menu", 80, 40);
+
+HorizontalLayout bar = new HorizontalLayout(800, 40);
+bar.setSpacing(8);
+bar.addElement(back);                   // keeps its own width
+bar.addElement(title);
+title.setLayoutWeight(1);               // takes what is left
+title.setRelativeHeight(1);             // and is as tall as the bar
+bar.addElement(menu);
+header.addElement(bar);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Fit to content, and anchors</h3>
+          <p class="ex-desc">A layout can size itself to its children, which suits lists. An anchor keeps an element at a spot in its parent however the window is resized. Anchors work for children of a plain container; a layout places its own children, so anchor the layout instead.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Sizing.java</span><button class="copy" type="button" data-copy="#layouts_sizing">Copy</button></div>
+<pre><code id="layouts_sizing" class="language-java">// A column with a fixed width whose height follows its rows.
+VerticalLayout list = new VerticalLayout(280, 0);
+list.setSpacing(6);
+list.setSizeToContent(false, true);
+for (String item : List.of("Inbox", "Sent", "Drafts")) {
+    list.addElement(new ButtonOverlay(item, 280, 32));
+}
+root.addElement(list);
+
+// Anchored elements keep their place when the window is resized.
+ButtonOverlay close = new ButtonOverlay("Close", 90, 32);
+close.setAnchor(Anchor.TOP_RIGHT, -12, 12); // 12 points in from the top-right corner
+root.addElement(close);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A whole screen as data</h3>
+          <p class="ex-desc">A layout file holds a tree of containers and elements as JSON. Loading it builds the real objects, so themes, transitions and click handlers work on them as usual. Find an element by the name it has in the file.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>layouts/menu.json</span><button class="copy" type="button" data-copy="#menu-json">Copy</button></div>
+<pre><code id="menu-json" class="language-json">{
+  "format": 1,
+  "root": {
+    "kind": "vertical", "name": "Menu", "width": 1280, "height": 720, "spacing": 12, "alignment": "CENTER",
+    "children": [
+      { "kind": "text", "name": "title", "text": "My Game", "fontSize": 48 },
+      { "kind": "button", "name": "play", "text": "Play", "width": 160, "height": 40, "cornerRadius": 6 },
+      { "kind": "button", "name": "quit", "text": "Quit", "width": 160, "height": 40,
+        "anchor": "BOTTOM_RIGHT", "offsetX": -16, "offsetY": -16 }
+    ]
+  }
+}</code></pre>
+          </div>
+          <div class="code reveal">
+            <div class="code-bar"><span>Menu.java</span><button class="copy" type="button" data-copy="#layouts_file">Copy</button></div>
+<pre><code id="layouts_file" class="language-java">Container ui = UiFile.load("layouts/menu.json");
+window.addContainer(ui);
+UiFile.find(ui, "play", ButtonOverlay.class).onAction(() -&gt; System.out.println("play!"));
+
+// Follow the window; anchored elements keep their place as it changes.
+window.onResize((width, height) -&gt; {
+    ui.setWidth(width);
+    ui.setHeight(height);
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 Styling -->
+      <section class="doc-section" id="styling">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">◐</span><span class="feature-num">03 · STYLING &amp; THEMES</span></div>
+          <h2>Every look is set from Java.</h2>
+          <p>No CSS engine and no native defaults. A theme gives every widget a baseline; anything you set yourself is <em>pinned</em> and survives theme switches.</p>
+          <div class="doc-links">
+            <a href="features.html#styling">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/styling/README.md" target="_blank" rel="noopener">Styling docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Gradients and animated borders</h3>
+          <p class="ex-desc">Any fill or border takes a <code>Paint</code>: a color, a gradient, a gradient that slides (<code>ScrollingGradient</code>) or a <code>RainbowColor</code> that cycles through the color wheel.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>StyledCard.java</span><button class="copy" type="button" data-copy="#styling_panel">Copy</button></div>
+<pre><code id="styling_panel" class="language-java">Container card = new Container(40, 40, 320, 180);
+card.getStyling().setBackgroundColor(new Color(0.12f, 0.12f, 0.14f, 1f));
+card.getStyling().setBorderColor(new RainbowColor()); // a border that cycles through the colour wheel
+card.getStyling().setBorderThickness(2f);
+card.getStyling().setCornerRadius(16f);
+root.addElement(card);
+
+ButtonOverlay glow = new ButtonOverlay("Upgrade", 160, 40);
+glow.getStyling().setBackgroundColor(new ScrollingGradient(Color.BLUE, Color.PURPLE, 80f)); // slides over time
+glow.getStyling().setCornerRadius(20f);
+glow.setTextColor(Color.WHITE); // pin the label colour
+glow.setPosition(20, 20);
+card.addElement(glow);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Themes you can switch live</h3>
+          <p class="ex-desc">Light, dark and crimson ship with the engine. <code>ThemeManager.setCurrent</code> restyles everything on screen at once. A property you set by hand is pinned until you reset it.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Themes.java</span><button class="copy" type="button" data-copy="#styling_theme">Copy</button></div>
+<pre><code id="styling_theme" class="language-java">ThemeManager.setCurrent(new DarkTheme()); // LightTheme, DarkTheme, CrimsonTheme, or your own
+
+ButtonOverlay toggle = new ButtonOverlay("Toggle theme", 150, 36);
+toggle.onAction(() -&gt; {
+    boolean dark = ThemeManager.getCurrent().getButtonBackground().getR() &lt; 0.5f;
+    ThemeManager.setCurrent(dark ? new LightTheme() : new DarkTheme()); // everything restyles live
+});
+
+// Anything you set yourself is pinned: a theme switch leaves it alone.
+accent.getStyling().setBackgroundColor(Color.RED);
+// ...until you hand it back to the theme.
+accent.getStyling().resetBackgroundColor();</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Animated backgrounds</h3>
+          <p class="ex-desc">A <code>Background</code> is an effect painted behind an element's content. It is not a child, so a layout never moves it. Attach one to a panel or to the whole window.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Backgrounds.java</span><button class="copy" type="button" data-copy="#styling_background">Copy</button></div>
+<pre><code id="styling_background" class="language-java">window.setBackground(new ConstellationBackground()); // drifting, linked dots behind everything
+
+formPanel.setBackground(new DotGridBackground());    // or behind a single panel
+
+AnimatedDotBackground dots = new AnimatedDotBackground();
+dots.setHueSpan(0.15f); // calmer: one colour family instead of the full rainbow
+dots.setSpeed(0.5f);    // half speed
+root.setBackground(dots);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 Containers -->
+      <section class="doc-section" id="containers">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">⤢</span><span class="feature-num">04 · DRAGGABLE CONTAINERS</span></div>
+          <h2>Let the user rearrange things.</h2>
+          <p>Containers that can be moved, resized and reordered by the user, with sensible limits so nothing ends up off-screen.</p>
+          <div class="doc-links">
+            <a href="features.html#containers">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/containers/README.md" target="_blank" rel="noopener">Container docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Drag, bound and collide</h3>
+          <p class="ex-desc">Dragging is off by default, so ordinary grouping containers don't move when the user drags across them. Controls inside, like buttons, keep their own clicks. A dragged container comes to the front.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Dragging.java</span><button class="copy" type="button" data-copy="#containers_drag">Copy</button></div>
+<pre><code id="containers_drag" class="language-java">Container panel = new Container(320, 80, 300, 200);
+panel.useTheme();
+panel.setDraggable(true);             // off by default; grab it anywhere that isn't a control
+panel.setDragBounds(0, 0, 800, 600);  // stay inside this rectangle
+panel.addCollideable(sidebar);        // and never be dragged into the sidebar
+root.addElement(panel);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A panel that scales with the window</h3>
+          <p class="ex-desc">A <code>ResizableContainer</code> follows the window proportionally and scales its children and font sizes with it. The user can drag its corners within the limits you set.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>ResizablePanel.java</span><button class="copy" type="button" data-copy="#containers_resize">Copy</button></div>
+<pre><code id="containers_resize" class="language-java">ResizableContainer panel = new ResizableContainer(60, 60, 360, 260);
+panel.setMinSize(200, 140);   // never shrink below this
+panel.setMaxSize(800, 600);   // never grow beyond this
+panel.setUserResizable(true); // the user can drag the corners
+
+ButtonOverlay ok = new ButtonOverlay("OK", 100, 32);
+panel.addElement(ok);
+panel.setFixedSize(ok, true); // the button keeps its 100x32 size; everything else scales
+
+window.addContainer(panel);   // follows the window as it is resized</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A grid the user can rearrange</h3>
+          <p class="ex-desc">Press an item, move a few points, and it lifts; the others slide aside. The grid only reports the new order, so saving it is up to you.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Rearrange.java</span><button class="copy" type="button" data-copy="#containers_grid">Copy</button></div>
+<pre><code id="containers_grid" class="language-java">ReorderableGrid grid = new ReorderableGrid(620, 400, 140, 100, 12); // width, height, item w, item h, gap
+grid.setPosition(20, 20);
+grid.useTheme();
+
+List&lt;Container&gt; cards = new java.util.ArrayList&lt;&gt;();
+for (String name : List.of("Alpha", "Beta", "Gamma", "Delta", "Epsilon")) {
+    Container card = new Container(140, 100);
+    card.useTheme();
+    TextOverlay label = new TextOverlay(name, 16f, Color.BLACK);
+    label.setPosition(12, 10);
+    card.addElement(label);
+    cards.add(card);
+}
+grid.setItems(cards);
+
+grid.onReorder(order -&gt; System.out.println("new order: " + order.size() + " cards")); // once per drag
+grid.onItemClick(card -&gt; System.out.println("opened a card"));
+root.addElement(grid);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 Animation -->
+      <section class="doc-section" id="animation">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">✦</span><span class="feature-num">05 · ANIMATION</span></div>
+          <h2>Motion that runs the same everywhere.</h2>
+          <p>Transitions animate UI elements. Tweens and sequences animate any value, or script a series of steps. Everything is driven by delta time, so it plays at the same real-world speed on every machine.</p>
+          <div class="doc-links">
+            <a href="features.html#animation">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/animation/transitions.md" target="_blank" rel="noopener">Transitions ↗</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/animation/tweens-and-sequences.md" target="_blank" rel="noopener">Tweens &amp; sequences ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Fades, pops and a title card that locks the game</h3>
+          <p class="ex-desc">A fade changes the whole element's opacity as one unit, children included. Chain animations by nesting callbacks. A locking transition holds the game still until it ends, or until the player presses a key.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Transitions.java</span><button class="copy" type="button" data-copy="#animation_transitions">Copy</button></div>
+<pre><code id="animation_transitions" class="language-java">panel.fadeIn(0.3f);                                   // transparent -&gt; opaque
+
+// Chain by nesting: the callback runs on the frame the fade finishes.
+panel.fadeOut(0.25f, () -&gt; {
+    panel.setEnabled(false);
+    next.setEnabled(true);
+    next.fadeIn(0.25f);
+});
+
+// Pop in: grow from 80% to full size with a little overshoot.
+card.playTransition(new ScaleTransition(0.8f, 1f, 0.3f, Easing.EASE_OUT_BACK, null));
+
+// A title card that holds the game still until it is over, or the player presses a key.
+title.fadeIn(2f).lock().skippable();</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Tweens and sequences</h3>
+          <p class="ex-desc">Inside a scene, <code>play(...)</code> runs on the scene's game clock, so animations pause with the game and are cancelled when the scene leaves. A sequence's timing is exact at any frame rate.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Shop.java</span><button class="copy" type="button" data-copy="#animation_tween">Copy</button></div>
+<pre><code id="animation_tween" class="language-java">public class Shop extends Scene {
+    private final Camera camera = new Camera();
+    private final TextOverlay banner = new TextOverlay("", 32f, Color.WHITE);
+    private float coinOffset, shown, scoreScale = 1f, playerX;
+
+    @Override
+    protected void onEnter() {
+        // A coin that bobs forever.
+        play(Tween.of(0f, -6f, 0.6f, v -&gt; coinOffset = v).easing(Easing.EASE_IN_OUT).loop().yoyo());
+
+        // A score that counts up, then pops.
+        float score = 1250f;
+        play(Tween.of(shown, score, 0.8f, v -&gt; shown = v).easing(Easing.EASE_OUT)
+                .onComplete(() -&gt; play(Tween.of(1.3f, 1f, 0.3f, v -&gt; scoreScale = v).easing(Easing.EASE_OUT_BACK))));
+
+        // A scripted moment: steps run one after another, on the scene's clock.
+        play(new Sequence()
+                .run(() -&gt; banner.setText("Wave 2"))
+                .delay(2f)
+                .then(Tween.to(camera::getZoom, camera::setZoom, 2f, 1f).easing(Easing.EASE_IN_OUT))
+                .waitUntil(() -&gt; playerX &gt; 400)
+                .run(this::spawnWave)
+                .onComplete(() -&gt; System.out.println("wave started")));
+    }
+
+    private void spawnWave() { }
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Write your own transition</h3>
+          <p class="ex-desc">Implement <code>Transition</code> to draw anything over an element each frame. This one pulses a yellow border and never finishes.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Pulse.java</span><button class="copy" type="button" data-copy="#animation_custom">Copy</button></div>
+<pre><code id="animation_custom" class="language-java">public class Pulse implements Transition {
+    private float time;
+
+    @Override
+    public void update(Element target, float delta) {
+        time += delta;
+    }
+
+    @Override
+    public void render(Renderer renderer, Element target) {
+        float a = 0.25f + 0.25f * (float) Math.sin(time * 5f);
+        renderer.drawBorder((float) target.getX(), (float) target.getY(),
+                (float) target.getWidth(), (float) target.getHeight(),
+                new Color(1f, 1f, 0.3f, a), 3f, target.getStyling().getCornerRadius());
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false; // loops until the program ends
+    }
+}
+
+// elsewhere: button.playTransition(new Pulse());</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 Game -->
+      <section class="doc-section" id="game">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">◈</span><span class="feature-num">06 · 2D GAME FRAMEWORK</span></div>
+          <h2>A game loop without a game engine on top.</h2>
+          <p>A <code>Scene</code> is one screen of a game. Logic runs at a fixed rate, drawing is smoothed between steps, and the scene's container holds ordinary UI that draws above the world.</p>
+          <div class="doc-links">
+            <a href="features.html#game">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/game/README.md" target="_blank" rel="noopener">Game docs ↗</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/graphics/README.md" target="_blank" rel="noopener">Graphics docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A scene with a camera, sprites and input</h3>
+          <p class="ex-desc"><code>fixedUpdate</code> moves the hero at 120 points per second whatever the frame rate. <code>render</code> blends between the last two steps, so motion stays smooth. Named actions come from an <code>InputContext</code>, which receives input only while the scene runs. The sprite batch draws every sprite sharing a texture in one call.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Level.java</span><button class="copy" type="button" data-copy="#game_level">Copy</button></div>
+<pre><code id="game_level" class="language-java">public class Level extends Scene {
+    private final Camera camera = new Camera();
+    private final SpriteBatch batch = new SpriteBatch();
+    private final Sprite hero = new Sprite(new TextureRegion(Texture.load("assets/hero.png")));
+    private final InputContext controls = new InputContext("gameplay")
+            .bind("left", Binding.key(GLFW_KEY_A), Binding.key(GLFW_KEY_LEFT))
+            .bind("right", Binding.key(GLFW_KEY_D), Binding.key(GLFW_KEY_RIGHT))
+            .bind("pause", Binding.key(GLFW_KEY_ESCAPE));
+    private float x, prevX;
+
+    public Level() {
+        addInputContext(controls);   // receives input while this scene runs
+        hero.setPivot(0.5f, 1f);     // stand on (x, y)
+    }
+
+    @Override
+    protected void onEnter() {
+        camera.setViewport(0, 0, (float) getContainer().getWidth(), (float) getContainer().getHeight());
+        camera.setZoom(3f);
+        getContainer().addElement(new TextOverlay("Level 1", 20f, Color.WHITE)); // UI sits above the world
+    }
+
+    @Override
+    protected void onResize(int width, int height) {
+        camera.setViewport(0, 0, width, height);
+    }
+
+    @Override
+    protected void fixedUpdate(float step) {             // 60 times a second, however fast the screen is
+        prevX = x;
+        x += controls.getAxis("left", "right") * 120 * step;
+    }
+
+    @Override
+    protected void update(float delta) {                 // once per frame
+        if (controls.isJustPressed("pause")) getSceneManager().push(new PauseMenu());
+        float drawX = prevX + (x - prevX) * GameTime.getAlpha();
+        camera.follow(drawX, 0, 6f, delta);              // ease towards the hero, the same at any frame rate
+        camera.update(delta);
+    }
+
+    @Override
+    protected void render(Renderer renderer, float alpha) {
+        hero.setPosition(prevX + (x - prevX) * alpha, 0); // smooth between fixed steps
+        batch.add(hero);
+
+        camera.begin(renderer);
+        batch.draw(renderer, camera.getVisibleBounds());  // one call for every sprite on the same texture
+        camera.end(renderer);
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Pause menus and scene transitions</h3>
+          <p class="ex-desc">Scenes live on a stack. A scene marked as an overlay lets the one below show through, and pushing it pauses the one below. Transitions fade, slide or wipe between them.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>PauseMenu.java</span><button class="copy" type="button" data-copy="#game_scenes">Copy</button></div>
+<pre><code id="game_scenes" class="language-java">public class PauseMenu extends Scene {
+    public PauseMenu() {
+        setOverlay(true);   // the frozen game stays visible underneath
+    }
+
+    @Override
+    protected void onEnter() {
+        getContainer().getStyling().setBackgroundColor(new Color(0f, 0f, 0f, 0.55f));
+        ButtonOverlay resume = new ButtonOverlay("Resume", 180, 40);
+        resume.setAnchor(Anchor.CENTER);   // stays centered when the window is resized
+        resume.onAction(() -&gt; getSceneManager().pop());
+        getContainer().addElement(resume);
+    }
+}
+
+void startGame(Window window) {
+    SceneManager scenes = window.getSceneManager();
+    scenes.set(new Level(), SceneTransition.fadeThrough(Color.BLACK, 0.6f)); // menu -&gt; level, through black
+    // later, from a key press or a button:
+    scenes.push(new PauseMenu(), SceneTransition.fade(0.2f));                // pauses the level below
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Particles that stay cheap</h3>
+          <p class="ex-desc">A <code>ParticleEffect</code> is a recipe with ranges for speed, lifetime, size and color. A <code>ParticleSystem</code> pools and draws them all in one batch. Use a burst for a hit and an emitter for a trail. <code>camera.shake</code> adds trauma that settles by itself.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Battle.java</span><button class="copy" type="button" data-copy="#game_particles">Copy</button></div>
+<pre><code id="game_particles" class="language-java">public class Battle extends Scene {
+    private final Camera camera = new Camera();
+    private final ParticleSystem particles = new ParticleSystem(5000); // pooled: nothing is allocated per particle
+    private final ParticleEffect sparks;
+    private final ParticleEmitter smoke;
+    private float rocketX, rocketY;
+
+    public Battle(TextureRegion spark, TextureRegion puff) {
+        sparks = new ParticleEffect(spark)
+                .speed(200f, 600f).lifetime(0.3f, 0.6f).size(8f, 14f).endScale(0.2f)
+                .drag(0.9f).alignToVelocity(1f / 400f).color(Color.ORANGE);
+
+        smoke = new ParticleEmitter(particles, new ParticleEffect(puff)
+                .speed(20f, 60f).lifetime(0.8f, 1.4f).size(10f, 24f).endScale(3f)
+                .color(Color.WHITE, Color.GRAY))
+                .rate(40).cone(270, 30);   // 40 a second, fanning upwards
+    }
+
+    void enemyDied(float x, float y) {
+        particles.burst(sparks, x, y, 40);  // 40 sparks flying out in every direction
+        camera.shake(0.3f);                 // a hit: about 0.1 for a shot, 0.6 for an explosion
+    }
+
+    @Override
+    protected void fixedUpdate(float step) {
+        smoke.moveTo(rocketX, rocketY);     // leaves a smooth trail even when the rocket is fast
+        smoke.update(step);
+        particles.update(step);
+    }
+
+    @Override
+    protected void update(float delta) {
+        camera.update(delta);
+    }
+
+    @Override
+    protected void render(Renderer renderer, float alpha) {
+        camera.begin(renderer);
+        particles.draw(renderer, camera.getVisibleBounds());   // thousands in one batched draw
+        camera.end(renderer);
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>SkSL shaders and post effects</h3>
+          <p class="ex-desc">A shader fills a rectangle, like the animated bar below. A post effect receives everything drawn between <code>pushEffect</code> and <code>popEffect</code> as <code>content</code>: here a vignette. The same SkSL runs on Metal, OpenGL, Vulkan and the CPU renderer.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Sea.java</span><button class="copy" type="button" data-copy="#game_shader">Copy</button></div>
+<pre><code id="game_shader" class="language-java">public class Sea extends Scene {
+    // SkSL runs the same on Metal, OpenGL, Vulkan and the CPU renderer.
+    private final ShaderEffect stripes = ShaderEffect.compile("""
+            uniform float time;
+            uniform half4 color;
+            half4 main(float2 coord) {
+                float band = step(0.5, fract((coord.x + coord.y + time * 40) / 24));
+                return color * (0.6 + 0.4 * band);
+            }
+            """);
+
+    // A post effect gets everything drawn between push and pop as `content`.
+    private final ShaderEffect vignette = ShaderEffect.compile("""
+            uniform shader content;
+            uniform float2 size;
+            half4 main(float2 coord) {
+                half4 color = content.eval(coord);
+                float edge = distance(coord / size, float2(0.5));
+                return half4(color.rgb * (1 - edge * edge * 1.4), color.a);
+            }
+            """);
+
+    public Sea() {
+        stripes.set("color", Color.ORANGE);
+    }
+
+    @Override
+    protected void render(Renderer renderer, float alpha) {
+        float width = (float) getContainer().getWidth();
+        float height = (float) getContainer().getHeight();
+
+        vignette.set("size", width, height);
+        renderer.pushEffect(vignette, 0, 0, width, height);
+
+        stripes.set("time", (float) GameTime.getTime());
+        renderer.drawShader(stripes, 20, 20, 300, 16, 8f);   // fill a rounded bar with the shader
+
+        renderer.popEffect();   // what comes after, like a HUD, is drawn normally
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Levels as data</h3>
+          <p class="ex-desc">An <code>EntityScene</code> holds entities with components. Fields marked <code>@Property</code> are saved with the scene, so a level can live in a JSON file. A child entity moves, turns and scales with its parent.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Entities.java</span><button class="copy" type="button" data-copy="#game_entities">Copy</button></div>
+<pre><code id="game_entities" class="language-java">public static class Spin extends Component {
+    @Property public float degreesPerSecond = 90f;   // saved with the scene, editable in the editor
+
+    @Override
+    protected void update(float delta) {
+        getTransform().rotate(degreesPerSecond * delta);
+    }
+}
+
+void entities(Window window) {
+    EntityScene scene = new EntityScene();
+
+    Entity player = scene.create("Player");
+    player.getTransform().setPosition(100, 200);
+    player.addComponent(new SpriteRenderer(TextureRef.of("assets/hero.png")));
+    player.addComponent(new BoxCollider(24, 32));
+    player.addComponent(new Spin());
+
+    Entity sword = new Entity("Sword");
+    sword.getTransform().setPosition(16, 0);   // 16 units to the player's right, turning with it
+    player.addChild(sword);
+
+    window.getSceneManager().set(scene);
+    // Or load a level that was saved as JSON:
+    // window.getSceneManager().set(EntityScene.load("scenes/level1.json"));
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 Media -->
+      <section class="doc-section" id="media">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">♪</span><span class="feature-num">07 · AUDIO &amp; VIDEO</span></div>
+          <h2>Sound with a place in the world, and video in the UI.</h2>
+          <p>Short sounds are decoded once and overlap freely. Music streams from disk. Positional audio works in 2D games too, and a video is just another element.</p>
+          <div class="doc-links">
+            <a href="features.html#media">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/audio/README.md" target="_blank" rel="noopener">Audio docs ↗</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/video/README.md" target="_blank" rel="noopener">Video docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Music, effects and playback control</h3>
+          <p class="ex-desc">Calling <code>playMusic</code> with the track that's already playing does nothing, so every screen can call it. Every <code>play</code> returns a <code>Playback</code> for adjusting that one instance; a finished playback ignores calls, so you never have to check first.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Sounds.java</span><button class="copy" type="button" data-copy="#media_sound">Copy</button></div>
+<pre><code id="media_sound" class="language-java">Audio.playMusic("music/menu.ogg");          // streams, loops, and crossfades
+Audio.playMusic("music/battle.ogg", 3f);    // a 3 second crossfade into the next track
+Audio.stopMusic(2f);                        // fade out and stop
+
+Sound hit = Sound.load("sfx/hit.ogg")       // short clips are decoded once and kept in memory
+        .channel(AudioChannel.SFX)
+        .pitchVariation(0.08f)              // each play up to 8% higher or lower
+        .minGap(0.05f)                      // skip a play less than 0.05 s after the last one
+        .maxPlaying(4);                     // ...or while 4 copies are still sounding
+hit.play(0.8f);                             // overlapping plays are fine
+
+Playback engine = Sound.load("sfx/engine.ogg").loop();
+engine.volume(0.6f);
+engine.pitch(1f + speed / 100f);            // rises as the player accelerates
+engine.stop(0.5f);                          // fade out when they stop</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sound in the world</h3>
+          <p class="ex-desc"><code>hearIn2D</code> sets the distance falloff and panning for a 2D game in one call. After that, place sounds where things happen. Add a world reverb, aim a sound with a cone, or muffle it when a wall is in the way.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>SpatialSound.java</span><button class="copy" type="button" data-copy="#media_spatial">Copy</button></div>
+<pre><code id="media_spatial" class="language-java">Audio.hearIn2D(150f, 1500f);   // once: full volume within 150 units, silent at 1500
+
+Sound explosion = Sound.load("sfx/explosion.ogg");
+Audio.listener().setPosition(camera.getX(), camera.getY()); // every frame: the ears follow the view
+explosion.playAt(x, y);                                     // heard from where it happens
+
+Audio.setReverb(Reverb.cave());   // every sound in the world now rings like a cave
+
+Playback horn = Sound.load("sfx/horn.ogg").loopAt(x, y, 0f)
+        .direction(0, 0, -1)      // which way it faces
+        .cone(60f, 200f, 0.2f);   // loud in front, 20% volume behind
+horn.occlusion(blocked ? 0.8f : 0f); // muffle it when a wall is in the way</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Video in the UI</h3>
+          <p class="ex-desc">A <code>VideoOverlay</code> streams from disk, so a file of tens of gigabytes opens instantly. H.264 and HEVC in MP4 or MOV play on macOS through the system decoder. On Windows and Linux, use Motion JPEG with PCM sound in AVI, MP4 or MOV; the docs list an FFmpeg command to convert.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Intro.java</span><button class="copy" type="button" data-copy="#media_video">Copy</button></div>
+<pre><code id="media_video" class="language-java">VideoOverlay intro = new VideoOverlay("assets/intro.avi", 1280, 720); // fitted into 1280x720
+intro.getPlayer().onFinish(() -&gt; System.out.println("intro finished"));
+container.addElement(intro);                                          // it starts playing at once
+
+VideoPlayer player = intro.getPlayer();
+player.setLooping(true);
+player.setVolume(0.6f);
+player.setProgress(0.5f);   // jump to the middle; big files are streamed from disk
+
+container.onMouseClick(event -&gt; intro.toggle());   // click to pause and resume
+intro.dispose();            // when you are done: stops decoding and closes the file</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 3D -->
+      <section class="doc-section" id="3d">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">⬡</span><span class="feature-num">08 · 3D (OPTIONAL)</span></div>
+          <h2>3D inside your UI.</h2>
+          <p>The 3D layer draws into a picture that the UI shows like an image: in a panel, or behind the whole window. It needs OpenGL or Vulkan, so on macOS a 3D program asks for Vulkan. Coordinates are right-handed with +Y up, and colors are written as you see them on screen.</p>
+          <div class="doc-links">
+            <a href="features.html#3d">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/3d/README.md" target="_blank" rel="noopener">3D docs ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A first scene: a cube you can orbit</h3>
+          <p class="ex-desc">A <code>Scene3D</code> is something a <code>Viewport3D</code> can show. <code>OrbitControls</code> turns the camera when the user drags and zooms with the wheel. The update handler runs once a frame.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>FirstCube.java</span><button class="copy" type="button" data-copy="#threed_cube">Copy</button></div>
+<pre><code id="threed_cube" class="language-java">// Vulkan on macOS; OpenGL is the default elsewhere.
+Window window = new Window(new WindowOptions("First cube")
+        .setDimensions(900, 520)
+        .setRenderer(RenderAPI.VULKAN));
+
+Scene3D scene = new Scene3D();
+scene.camera().lookAt(new Vec3(3, 2.5f, 4), new Vec3(0, 0.75f, 0)); // from above and the side
+
+Node3D cube = new Node3D("cube", Mesh.cube(1.5f), new Material(Color.CORNFLOWER_BLUE));
+cube.setPosition(0, 0.75f, 0);
+scene.add(cube);
+scene.setUpdateHandler((s, delta) -&gt; cube.rotate(Vec3.UP, delta)); // one radian a second
+
+Viewport3D view = new Viewport3D(640, 480);   // 3D inside a panel of the 2D UI
+view.setPosition(20, 20);
+view.setContent(scene);
+view.setInputListener(new OrbitControls(scene.camera())); // drag to turn, scroll to zoom
+
+Container root = new Container(900, 520);
+window.addContainer(root);
+root.addElement(view);
+
+ButtonOverlay close = new ButtonOverlay("Close", 120, 32);
+close.setPosition(700, 20);
+close.onAction(window::close);
+root.addElement(close);
+
+new Engine().start(window);
+
+// Or put the same scene behind the whole window, with the UI on top:
+// window.setBackground(new Background3D(window, scene));</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Materials, lights, shadows and a sky</h3>
+          <p class="ex-desc">An HDR sky both lights the scene and reflects in the gold ball. A directional light adds sharp shadows nearby through three cascades. Tone mapping brings the bright sky into range; bloom and fog finish the picture.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Lighting.java</span><button class="copy" type="button" data-copy="#threed_light">Copy</button></div>
+<pre><code id="threed_light" class="language-java">// Materials: classic for flat colours, PBR for anything that should look real.
+Material gold = new Material(new Color(1f, 0.78f, 0.34f, 1f)).setMetallic(1f).setRoughness(0.25f);
+Material lamp = new Material(Color.BLACK).setEmissive(Color.WHITE, 3f);   // glows
+
+Node3D ball = new Node3D("ball", Mesh.sphere(0.8f, 48, 24), gold);
+ball.setPosition(0, 0.8f, 0);
+scene.add(ball);
+
+// A sun with sharp-near, far-reaching shadows, and a spot light with its own.
+Light sun = Light.directional(new Vec3(-0.5f, -1f, -0.35f), Color.WHITE, 1.1f)
+        .setShadows(Shadows.of(ShadowQuality.HIGH).cascades(3).distance(80f));
+Light spot = Light.spot(new Vec3(0, 5, 0), new Vec3(0, -1, 0), Color.WHITE, 3f, 20f, 20f, 35f)
+        .setShadows(ShadowQuality.MEDIUM);
+scene.lights().clear();
+scene.lights().add(sun);
+scene.lights().add(spot);
+
+// An HDR sky that is both the backdrop and the light: the metal reflects it.
+scene.setSkybox(Skybox.equirectHdr(HdrTextureData.load(Path.of("sky.hdr"))));
+scene.setEnvironmentLighting(1f);
+scene.setToneMapping(ToneMapping.ACES);   // brings the bright sun into range
+scene.setExposure(0.8f);
+scene.setBloom(0.6f);                     // a soft glow round the brightest parts
+scene.setFog(new Color(0.75f, 0.6f, 0.8f, 1f), 0.02f);</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Models and skeletal animation</h3>
+          <p class="ex-desc">Loading reads files but never touches the GPU, so it is safe on a worker thread. The result callback runs on the render thread, where the scene can be changed.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>LoadModel.java</span><button class="copy" type="button" data-copy="#threed_model">Copy</button></div>
+<pre><code id="threed_model" class="language-java">Path path = Path.of("assets/soldier.glb");   // also OBJ, FBX and Collada
+
+// Loading never touches the GPU, so do it on a worker thread.
+Scheduler.async(() -&gt; {
+            try {
+                return Model.load(path);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        })
+        .onSuccess(model -&gt; {                       // back on the render thread
+            scene.add(model.root());
+            orbit.frame(model.bounds());            // aim the camera at it
+
+            AnimationPlayer player = model.player();
+            scene.animate(player);                  // advances once per frame
+            player.play("Idle");
+            // later: player.play("Run", 0.3f);     // blend into another clip over 0.3 seconds
+        })
+        .onError(e -&gt; System.err.println("Could not load " + path + ": " + e.getMessage()));</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Physics</h3>
+          <p class="ex-desc">A <code>RigidBody</code> moves a node; the world writes the position and rotation back each frame. Shapes are in the node's own units. Click to fire a ball from the camera into the crates. Physics is plain Java with no native library.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Physics.java</span><button class="copy" type="button" data-copy="#threed_physics">Copy</button></div>
+<pre><code id="threed_physics" class="language-java">Scene3D scene = new Scene3D();
+PhysicsWorld world = new PhysicsWorld();
+scene.setPhysics(world);                    // steps once per frame from now on
+
+Node3D floor = new Node3D("floor", Mesh.plane(20, 20), new Material(new Color(0.5f, 0.5f, 0.5f, 1f)));
+scene.add(floor);
+world.add(new RigidBody(floor, BodyType.STATIC).addShape(new PlaneShape()));
+
+Mesh cube = Mesh.cube(1f);
+Material wood = new Material(new Color(0.75f, 0.5f, 0.3f, 1f));
+for (int i = 0; i &lt; 5; i++) {
+    Node3D crate = new Node3D("crate", cube, wood);
+    crate.setPosition(i * 0.2f, 1f + i * 1.5f, 0);   // a wobbly column that will topple
+    scene.add(crate);
+    world.add(new RigidBody(crate).addShape(BoxShape.ofSize(1, 1, 1)).setMass(10f));
+}
+
+// Click to fire a ball from the camera.
+Mesh ballMesh = Mesh.sphere(0.3f, 32, 16);
+Material red = new Material(new Color(0.9f, 0.2f, 0.2f, 1f));
+Viewport3D view = new Viewport3D(900, 600);
+view.setContent(scene);
+view.setInputListener(new Viewport3D.InputListener() {
+    @Override
+    public void clicked(double x, double y) {
+        Ray ray = scene.camera().screenRay(x, y, view.getWidth(), view.getHeight());
+        Node3D ball = new Node3D("ball", ballMesh, red);
+        ball.setPosition(ray.origin());
+        scene.add(ball);
+        world.add(new RigidBody(ball).addShape(new SphereShape(0.3f)).setMass(5f)
+                .setVelocity(ray.direction().normalized().mul(25f)));
+    }
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 App -->
+      <section class="doc-section" id="app">
+        <div class="doc-head reveal">
+          <div class="feature-top"><span class="ico">⚙</span><span class="feature-num">09 · APP PLUMBING</span></div>
+          <h2>The parts every real app needs.</h2>
+          <p>Callbacks always arrive on the render thread, so you can change the UI from them directly. Slow work goes on a worker thread, and its results come back the same way.</p>
+          <div class="doc-links">
+            <a href="features.html#app">Feature details</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/reference/README.md" target="_blank" rel="noopener">Reference docs ↗</a>
+            <a href="https://github.com/piitex/RenGL/blob/main/docs/core/scheduler.md" target="_blank" rel="noopener">Scheduler ↗</a>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Native file dialogs</h3>
+          <p class="ex-desc">The operating system's own open and save dialogs. <code>show()</code> never blocks, and the callbacks run on the render thread, so they can update elements directly. The dialog only chooses a path; reading and writing is up to you.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>ImportExport.java</span><button class="copy" type="button" data-copy="#app_files">Copy</button></div>
+<pre><code id="app_files" class="language-java">importButton.onAction(() -&gt; FileDialog.open()      // the operating system's own dialog
+        .filter("Text files", "txt", "md")
+        .onSelect(path -&gt; {
+            try {
+                editor.setText(Files.readString(path));
+            } catch (IOException e) {
+                status.setText("Could not read " + path.getFileName());
+            }
+        })
+        .show());                                  // never blocks; callbacks arrive on the render thread
+
+exportButton.onAction(() -&gt; FileDialog.save()
+        .filter("Text files", "txt")
+        .defaultName("notes.txt")
+        .onSelect(path -&gt; {
+            try {
+                Files.writeString(path, editor.getText());
+            } catch (IOException e) {
+                status.setText("Could not write " + path.getFileName());
+            }
+        })
+        .show());</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Timers and background work</h3>
+          <p class="ex-desc"><code>Scheduler</code> covers a splash screen, a repeating clock and slow work on a worker thread. Timers count frame time, so they stay in step with animations.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Timers.java</span><button class="copy" type="button" data-copy="#app_scheduler">Copy</button></div>
+<pre><code id="app_scheduler" class="language-java">// A splash screen that becomes the main UI after three seconds.
+window.addContainer(splash);
+Scheduler.after(3f, () -&gt; {
+    window.removeContainer(splash);
+    window.addContainer(main);
+});
+
+// A clock that ticks once a second, until you cancel it.
+Task clock = Scheduler.every(1f, () -&gt; time.setText(LocalTime.now().toString()));
+// clock.cancel();
+
+// Slow work goes on a worker thread. Touch the UI only in the callbacks.
+Scheduler.async(() -&gt; loadSaveFile(path))        // worker thread
+        .onSuccess(save -&gt; showMenu(save))       // render thread
+        .onError(e -&gt; status.setText("Load failed: " + e.getMessage()));</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>A loading screen's loader</h3>
+          <p class="ex-desc">A <code>Loader</code> runs named steps one after another and reports weighted progress. Steps marked as render-thread steps run one per frame, so the screen keeps drawing between them. What the loading screen looks like is up to you.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Boot.java</span><button class="copy" type="button" data-copy="#app_loader">Copy</button></div>
+<pre><code id="app_loader" class="language-java">public class Boot {
+    private final List&lt;Sound&gt; sounds = new ArrayList&lt;&gt;();
+    private String map;
+    private String level;
+
+    void load(SceneManager scenes, TextOverlay status, List&lt;String&gt; files) {
+        Loader loader = new Loader()
+                .add("Map", progress -&gt; map = "level-1")                    // worker thread
+                .add("Sounds", 3f, progress -&gt; {                            // weighs 3 times as much
+                    for (int i = 0; i &lt; files.size(); i++) {
+                        sounds.add(Sound.load(files.get(i)));
+                        progress.set(i + 1, files.size());                  // progress within the step
+                    }
+                })
+                .addOnRenderThread("Scene", progress -&gt; level = map + "!")  // render thread, one step per frame
+                .onComplete(() -&gt; System.out.println("ready: " + level))
+                .onError(error -&gt; status.setText("Couldn't load: " + error.getMessage()))
+                .start();
+
+        // Each frame, read loader.getProgress() (0 to 1) and loader.getCurrentStep() to draw a loading bar.
+    }
+}</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Config files and where they live</h3>
+          <p class="ex-desc"><code>AppEnvironment</code> answers "where do my files live?" the same way from the IDE and from an installed build. Read shipped files from assets and write everything else to the per-user data folder.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Settings.java</span><button class="copy" type="button" data-copy="#app_config">Copy</button></div>
+<pre><code id="app_config" class="language-java">AppEnvironment env = AppEnvironment.create("chat-app");
+
+Path logo = env.getAssetPath("logo.png");        // shipped with the app, read-only
+Path saves = env.getDirectory("saves");          // per-user and writable; created if missing
+
+Config cfg = env.loadOrCreateConfig("settings.cfg", c -&gt; {
+    c.setDefault("window.width", 1280);          // only applied where the key is missing
+    c.setDefault("audio.volume", 0.8);
+    c.setDefault("engine-vsync", true);
+});
+int width = cfg.getInt("window.width", 1280);
+double volume = cfg.getDouble("audio.volume", 0.8);
+
+cfg.set("audio.volume", 0.5);
+env.saveConfig("settings.cfg", cfg);             // always written to the per-user data folder</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Downloads</h3>
+          <p class="ex-desc">Bytes go to a <code>.part</code> file and only move to the target once complete and verified. A dropped connection is retried and resumed. Ready-made progress displays read the download once per frame.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Fetch.java</span><button class="copy" type="button" data-copy="#app_download">Copy</button></div>
+<pre><code id="app_download" class="language-java">Download d = new Download(URI.create("https://example.com/backend.zip"), Path.of("downloads/backend.zip"));
+d.setExpectedSha256("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"); // verified before the file appears
+d.setSegments(4);                  // up to 16 connections at once, where the server allows it
+d.setMaxBytesPerSecond(2_000_000); // optional speed limit
+d.start();                         // runs on background threads; pause() and start() resume it</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Windows</h3>
+          <p class="ex-desc">One engine can drive any number of windows. Window options stay live: change a setter on a running window and the window changes, even the graphics API.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Windows.java</span><button class="copy" type="button" data-copy="#app_windows">Copy</button></div>
+<pre><code id="app_windows" class="language-java">Window game = new Window(new WindowOptions("Game").setDimensions(960, 540));
+game.onClose(() -&gt; System.out.println("game window closed"));
+game.open();                       // a second OS window, driven by the same engine
+
+// Window options stay live: change them on a running window.
+window.getWindowOptions().setTitle("My App - Level 2");
+window.getWindowOptions().setAlwaysOnTop(true);
+window.getWindowOptions().setFullscreen(true);
+window.getWindowOptions().setRenderer(RenderAPI.VULKAN); // reopens the window on another graphics API
+
+// A borderless splash that becomes the main window, all in one OS window.
+window.setStyle(WindowStyle.STANDARD);
+window.setSize(1280, 720);
+window.center();</code></pre>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Rebindable controls</h3>
+          <p class="ex-desc">Game code asks about named actions, never about keys, so players can rebind them. A key code names a position on the keyboard, and <code>getDisplayName</code> returns what that key prints on the player's own layout.</p>
+          <div class="code reveal">
+            <div class="code-bar"><span>Controls.java</span><button class="copy" type="button" data-copy="#app_input">Copy</button></div>
+<pre><code id="app_input" class="language-java">InputContext controls = new InputContext("gameplay")
+        .bind("jump", Binding.key(GLFW_KEY_SPACE), Binding.mouse(GLFW_MOUSE_BUTTON_RIGHT));
+
+// In your settings screen, once the player has pressed a new key:
+controls.setBindings("jump", Binding.key(GLFW_KEY_W));
+controls.resetBindings("jump");                          // back to the defaults
+
+String label = Binding.key(GLFW_KEY_Z).getDisplayName(); // what the key prints on their own keyboard layout</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <div class="verified reveal">
+        <strong>About these examples.</strong> Each snippet was compiled against the engine's source in October 2026. RenGL's API can still change before 1.0, and the <a href="https://github.com/piitex/RenGL/tree/main/docs" target="_blank" rel="noopener" style="color:var(--cyan)">documentation</a> always has the current version. Asset paths such as <code>assets/hero.png</code> are placeholders for your own files.
+      </div>
+    </div>
+
+    <section class="wrap">
+      <div class="final reveal">
+        <h2>Ready to try it?</h2>
+        <div class="cta">
+          <a class="btn btn-primary" href="index.html#start">Get started</a>
+          <a class="btn btn-ghost" href="products.html">See what's been built</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="site-footer"></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
