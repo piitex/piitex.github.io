@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor – RenGL</title>
+  <meta name="description" content="The RenGL Editor: design apps, 2D games and 3D games visually, run them in a window beside the editor, and write the Java behind them in the same place.">
+  <meta name="theme-color" content="#0b0a16">
+  <meta property="og:title" content="The RenGL Editor">
+  <meta property="og:description" content="Design apps and games visually, then write the Java behind them. Made with RenGL, so what you see is what ships.">
+  <meta property="og:image" content="assets/img/editor-app.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script src="js/layout.js"></script>
+  <noscript><nav class="wrap noscript-nav"><a href="index.html">Home</a><a href="features.html">Features</a><a href="editor.html">Editor</a><a href="code.html">Code</a><a href="products.html">Products</a></nav></noscript>
+  <div class="bg-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main>
+    <header class="wrap page-head reveal">
+      <p class="eyebrow">RenGL Editor</p>
+      <h1>Design apps and games <span class="grad">visually.</span></h1>
+      <p class="lead">Drag, resize and style a screen on a canvas, see it the way your app will draw it, and run it in a window of its own. When a button needs to do something, the Java is one click away.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/piitex/RenGL-Editor" target="_blank" rel="noopener">Get the editor ↗</a>
+        <a class="btn btn-ghost" href="#start">How to run it</a>
+      </div>
+    </header>
+
+    <section class="wrap">
+      <div class="window big natural reveal">
+        <div class="window-bar"><i></i><i></i><i></i></div>
+        <img src="assets/img/editor-app.jpg" alt="The RenGL Editor on an app project: the element tree on the left, a settings screen in the middle drawn in the dark theme, and the inspector for the selected button on the right" width="1600" height="833">
+      </div>
+      <p class="caption reveal">The editor is a RenGL app itself: every panel, tree and field in this screenshot is drawn by the toolkit it edits.</p>
+    </section>
+
+    <!-- PROJECT TYPES -->
+    <section class="section wrap" id="projects">
+      <div class="section-head reveal">
+        <p class="eyebrow">Three kinds of project</p>
+        <h2>Start with what you're making.</h2>
+        <p class="sub">A new project is a Maven build that depends on RenGL, a <code>Main</code> class that starts it, an <code>assets</code> folder and a first scene or layout. Open it in the editor and go.</p>
+      </div>
+      <div class="grid features">
+        <article class="card reveal">
+          <span class="ico">▤</span>
+          <h3>App</h3>
+          <p>Screens built from containers and elements: layouts, buttons, text, images, fields, tabs and splits. A screen is a JSON <em>layout</em> the app loads with one line.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">✦</span>
+          <h3>2D game</h3>
+          <p>Scenes of entities with sprites, colliders and your own components, shown through a camera with a grid and zoom. Pick, move and nest entities in a hierarchy.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">◈</span>
+          <h3>3D game</h3>
+          <p>Scenes of meshes, models, materials and lights, with a camera and a sky. Move, rotate and scale with handles in a viewport drawn by the GPU, the way the game draws it.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- DESIGNER -->
+    <section class="section wrap" id="designer">
+      <div class="split">
+        <div class="reveal">
+          <p class="eyebrow">The designer</p>
+          <h2>What you see is what the app draws.</h2>
+          <p class="sub">The page in the middle is the real layout, drawn by the same engine that will run it. No preview mode to trust.</p>
+          <ul class="ticks">
+            <li><strong>Hierarchy.</strong> Every element as a tree. Add with <code>+</code> or the Element menu, rename with F2, reorder and nest.</li>
+            <li><strong>Direct manipulation.</strong> Click to select the innermost element, drag it, resize it from its handles, or drop it into a layout at the line that shows where it will land.</li>
+            <li><strong>Inspector.</strong> Size, anchors, style, text, values and events for the selected element, with a tooltip on every property.</li>
+            <li><strong>Everything undoes.</strong> Ctrl+Z and Ctrl+Shift+Z cover every move, resize and property change.</li>
+            <li><strong>Try other themes.</strong> Step the page through Light, Dark and Crimson, or edit the project's own theme.</li>
+          </ul>
+        </div>
+        <div class="window natural reveal">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <img src="assets/img/editor-light.jpg" alt="The page and inspector of the app designer in the Light theme, with a profile card selected and its size, spacing and style in the inspector" loading="lazy" width="1400" height="829">
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D -->
+    <section class="section wrap" id="3d">
+      <div class="split">
+        <div class="window natural reveal">
+          <div class="window-bar"><i></i><i></i><i></i></div>
+          <img src="assets/img/editor-3d.jpg" alt="The 3D scene editor with a floor, a red box and a blue ball lit by a directional light, and the scene's sky, fog and shadow settings on the right" loading="lazy" width="1600" height="900">
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">Scenes in 2D and 3D</p>
+          <h2>Build the world, not just the menu.</h2>
+          <p class="sub">Games get the same editor with a viewport in place of the page.</p>
+          <ul class="ticks">
+            <li><strong>3D viewport.</strong> Drawn by the GPU as the game would draw it. Orbit, pan and zoom, and pick a node with a click.</li>
+            <li><strong>Handles.</strong> Move, rotate and scale with Q, W, E and R, and press Escape to put a drag back.</li>
+            <li><strong>Lights, camera and sky.</strong> Add them from the Add menu, look through the scene's own camera, and set fog, shadows and tone mapping.</li>
+            <li><strong>2D scenes.</strong> A grid and camera, nested entities, sprites from images and your own components.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RUN + CODE -->
+    <section class="section wrap" id="run">
+      <div class="section-head reveal">
+        <p class="eyebrow">From layout to running app</p>
+        <h2>Run it, then make it do something.</h2>
+      </div>
+      <div class="grid features">
+        <article class="card reveal">
+          <span class="ico">▶</span>
+          <h3>Run in a window</h3>
+          <p>Run Layout opens your screen in a window of its own, with its own theme. Resize it to check anchors, docks and splits at other sizes, and turn on reload to follow every edit.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">⌘</span>
+          <h3>Java in the same place</h3>
+          <p>A code editor with highlighting and completion that asks the real Java compiler, so it knows your classes and the engine's. It docks beside the page or pops out into its own window.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">⚡</span>
+          <h3>Events wire themselves</h3>
+          <p>Name a method on a button's click and the editor adds the method to your controller class. It only ever adds, so code you wrote is never touched.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">◐</span>
+          <h3>Themes</h3>
+          <p>A theme editor for the colors and corner size of every button, field and panel, saved in <code>theme.json</code> and loaded by the app, so the editor shows what ships.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">▤</span>
+          <h3>Console</h3>
+          <p>Compile errors and stack traces from your project's code land in a console. Click a line and the file opens at that line in the code editor.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico">?</span>
+          <h3>Docs built in</h3>
+          <p>Press F1 on any element for its documentation: what it is for, how it behaves and every setting it has.</p>
+        </article>
+      </div>
+
+      <div class="code reveal" style="margin-top:36px">
+        <div class="code-bar"><span>Main.java and MainController.java, as a new app project makes them</span><button class="copy" type="button" data-copy="#edcode">Copy</button></div>
+<pre><code id="edcode" class="language-java">// Main: load the layout the editor saved, and connect the methods it names.
+Container ui = UiFile.load("layouts/main.json");
+window.addContainer(ui);
+UiHandlers.bind(ui, new MainController(ui));
+
+// MainController: the editor adds saveSettings() when a button's On Click is set to it.
+public class MainController {
+    private final Container root;
+
+    public MainController(Container root) {
+        this.root = root;
+    }
+
+    public void saveSettings() {
+        UiFile.find(root, "savedText", TextOverlay.class).setText("Saved");
+    }
+}</code></pre>
+      </div>
+    </section>
+
+    <!-- GET STARTED -->
+    <section class="section wrap" id="start">
+      <div class="section-head reveal">
+        <p class="eyebrow">Run the editor</p>
+        <h2>Build RenGL once, then open the editor.</h2>
+        <p class="sub">The editor is a Java project that depends on the engine, so the engine goes into your local Maven repository first.</p>
+      </div>
+      <ol class="steps">
+        <li class="reveal">
+          <span class="num">1</span>
+          <h3>Install the engine</h3>
+          <p>JDK 25 and a GPU with OpenGL 3.3 (or Metal on macOS). Skip this if you already did it for RenGL.</p>
+          <div class="cmd"><code id="ecmd1">git clone https://github.com/piitex/RenGL.git
+cd RenGL
+./mvnw install -DskipTests</code><button class="copy" type="button" data-copy="#ecmd1">Copy</button></div>
+        </li>
+        <li class="reveal">
+          <span class="num">2</span>
+          <h3>Get the editor</h3>
+          <p>Clone it beside the engine and open the folder in your IDE as a Maven project.</p>
+          <div class="cmd"><code id="ecmd2">git clone https://github.com/piitex/RenGL-Editor.git</code><button class="copy" type="button" data-copy="#ecmd2">Copy</button></div>
+        </li>
+        <li class="reveal">
+          <span class="num">3</span>
+          <h3>Run EditorApp</h3>
+          <p>Run <code>me.piitex.editor.EditorApp</code>. It opens on a project hub to make or open a project. On macOS add the JVM flags.</p>
+          <div class="cmd"><code id="ecmd3">-XstartOnFirstThread --enable-native-access=ALL-UNNAMED</code><button class="copy" type="button" data-copy="#ecmd3">Copy</button></div>
+        </li>
+      </ol>
+      <div class="notice reveal">
+        <strong>Status:</strong> the editor is in active development. A few things are known to be rough, such as hover effects on running apps and auto-importing in the code editor.
+        <a href="https://github.com/piitex/RenGL-Editor" target="_blank" rel="noopener">RenGL-Editor on GitHub ↗</a>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="final reveal">
+        <h2>Boring, simplistic designs don't have to be the normal.</h2>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/piitex/RenGL-Editor" target="_blank" rel="noopener">Get the editor</a>
+          <a class="btn btn-ghost" href="features.html">What RenGL can do</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="site-footer"></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>
