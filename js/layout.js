@@ -8,6 +8,7 @@
   // [label, file]. The page you are on is highlighted automatically.
   var PAGES = [
     ['Features', 'features.html'],
+    ['Editor', 'editor.html'],
     ['Code', 'code.html'],
     ['Products', 'products.html'],
     ['Get started', 'index.html#start']
@@ -50,7 +51,7 @@
         '<p class="small">Built on Java.</p>' +
       '</div>' +
       '<nav class="footer-links" aria-label="Footer">' +
-        '<a href="features.html">Features</a><a href="code.html">Code</a><a href="products.html">Products</a>' + footerLinks +
+        '<a href="features.html">Features</a><a href="editor.html">Editor</a><a href="code.html">Code</a><a href="products.html">Products</a>' + footerLinks +
       '</nav>' +
     '</div>';
 

@@ -1,10 +1,11 @@
 # RenGL website
 
-A small static site for RenGL and the products built with it. Four pages, no build step, no dependencies.
+A small static site for RenGL and the products built with it. Five pages, no build step, no dependencies.
 
 ```
 index.html      home: hero, showcase tabs, links to the other pages, get started
 features.html   the nine feature areas
+editor.html     the RenGL Editor: what it does, screenshots, how to run it
 code.html       detailed Java examples, in the same order as the features
 products.html   OpenZip, CCA, SketchGL, Phorg
 css/style.css   all the styling (colors are variables at the top)
